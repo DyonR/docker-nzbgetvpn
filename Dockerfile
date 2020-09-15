@@ -7,17 +7,31 @@ RUN usermod -u 99 nobody
 # Make directories
 RUN mkdir -p /downloads /config/NZBGet /etc/openvpn /etc/nzbget
 
-RUN apt update \
+# Install NZBGet and dependencies
+RUN echo "deb http://deb.debian.org/debian/ buster non-free" > /etc/apt/sources.list.d/non-free-unrar.list \
+    && printf 'Package: *\nPin: release a=non-free\nPin-Priority: 150\n' > /etc/apt/preferences.d/limit-non-free \
+    apt update \
     && apt -y upgrade \
     && apt -y install --no-install-recommends \
     curl \
     jq \
     ca-certificates \
+    p7zip-full \
+	par2 \
+    unrar \
+    unzip \
+    zip \
     && NZBGET_VERSION=$(curl -sX GET "https://api.github.com/repos/nzbget/nzbget/releases" | jq '.[] | select(.prerelease==false) | .name' | head -n 1 | tr -d '"') \
     && curl -o nzbget-${NZBGET_VERSION}-bin-linux.run -L https://github.com/nzbget/nzbget/releases/download/v${NZBGET_VERSION}/nzbget-${NZBGET_VERSION}-bin-linux.run \
     && chmod +x nzbget-${NZBGET_VERSION}-bin-linux.run \
     && ./nzbget-${NZBGET_VERSION}-bin-linux.run \
-    && rm  nzbget-${NZBGET_VERSION}-bin-linux.run
+    && rm  nzbget-${NZBGET_VERSION}-bin-linux.run \
+    && apt-get clean \
+    && apt -y autoremove \
+    && rm -rf \
+    /var/lib/apt/lists/* \
+    /tmp/* \
+    /var/tmp/*
 
 RUN echo "deb http://deb.debian.org/debian/ unstable main" > /etc/apt/sources.list.d/unstable-wireguard.list \ 
     && printf 'Package: *\nPin: release a=unstable\nPin-Priority: 150\n' > /etc/apt/preferences.d/limit-unstable \
