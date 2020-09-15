@@ -1,6 +1,6 @@
 # [NZBGet](https://github.com/nzbget/NZBGet), WireGuard and OpenVPN
 [![Docker Pulls](https://img.shields.io/docker/pulls/dyonr/nzbgetvpn)](https://hub.docker.com/r/dyonr/nzbgetvpn)
-[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/dyonr/nzbgetvpn/alpha)](https://hub.docker.com/r/dyonr/nzbgetvpn)
+[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/dyonr/nzbgetvpn/)](https://hub.docker.com/r/dyonr/nzbgetvpn)
 
 Docker container which runs the latest [NZBGet](https://github.com/nzbget/NZBGet) client while connecting to WireGuard or OpenVPN with iptables killswitch to prevent IP leakage when the tunnel goes down.
 
