@@ -26,6 +26,10 @@ RUN echo "deb http://deb.debian.org/debian/ buster non-free" > /etc/apt/sources.
     && chmod +x nzbget-${NZBGET_VERSION}-bin-linux.run \
     && ./nzbget-${NZBGET_VERSION}-bin-linux.run \
     && rm  nzbget-${NZBGET_VERSION}-bin-linux.run \
+    && apt -y purge \
+    curl \
+    jq \
+    ca-certificates \
     && apt-get clean \
     && apt -y autoremove \
     && rm -rf \
