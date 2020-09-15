@@ -17,7 +17,7 @@ RUN echo "deb http://deb.debian.org/debian/ buster non-free" > /etc/apt/sources.
     jq \
     ca-certificates \
     p7zip-full \
-	par2 \
+    par2 \
     unrar \
     unzip \
     zip \
