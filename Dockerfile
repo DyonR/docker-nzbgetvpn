@@ -10,7 +10,7 @@ RUN mkdir -p /downloads /config/NZBGet /etc/openvpn /etc/nzbget
 # Install NZBGet and dependencies
 RUN echo "deb http://deb.debian.org/debian/ buster non-free" > /etc/apt/sources.list.d/non-free-unrar.list \
     && printf 'Package: *\nPin: release a=non-free\nPin-Priority: 150\n' > /etc/apt/preferences.d/limit-non-free \
-    apt update \
+    && apt update \
     && apt -y upgrade \
     && apt -y install --no-install-recommends \
     curl \
