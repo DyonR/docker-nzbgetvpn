@@ -42,6 +42,7 @@ RUN echo "deb http://deb.debian.org/debian/ unstable main" > /etc/apt/sources.li
     procps \
     moreutils \
     net-tools \
+    kmod \
     dos2unix \
     openvpn \
     openresolv \
