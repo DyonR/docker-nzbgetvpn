@@ -13,22 +13,12 @@ if [[ ! -z "${check_network}" ]]; then
 	exit 1
 fi
 
-export VPN_ENABLED=$(echo "${VPN_ENABLED}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
+export VPN_ENABLED=$(echo "${VPN_ENABLED,,}" | sed -e 's~^[ \t]*~~;s~[ \t]*$~~')
 if [[ ! -z "${VPN_ENABLED}" ]]; then
 	echo "[INFO] VPN_ENABLED defined as '${VPN_ENABLED}'" | ts '%Y-%m-%d %H:%M:%.S'
 else
 	echo "[WARNING] VPN_ENABLED not defined,(via -e VPN_ENABLED), defaulting to 'yes'" | ts '%Y-%m-%d %H:%M:%.S'
 	export VPN_ENABLED="yes"
-fi
-
-export DISABLE_IPV6=$(echo "${DISABLE_IPV6,,}")
-echo "[INFO] DISABLE_IPV6 is set to '${DISABLE_IPV6}'" | ts '%Y-%m-%d %H:%M:%.S'
-if [[ $DISABLE_IPV6 == "1" || $DISABLE_IPV6 == "true" || $DISABLE_IPV6 == "yes" || $DISABLE_IPV6 == "" ]]; then
-	echo "[INFO] Disabling IPv6 in sysctl" | ts '%Y-%m-%d %H:%M:%.S'
-	sysctl -w net.ipv6.conf.all.disable_ipv6=1 > /dev/null 2>&1
-else
-	echo "[INFO] Enabling IPv6 in sysctl" | ts '%Y-%m-%d %H:%M:%.S'
-	sysctl -w net.ipv6.conf.all.disable_ipv6=0 > /dev/null 2>&1
 fi
 
 if [[ $VPN_ENABLED == "yes" ]]; then
@@ -229,7 +219,7 @@ if [[ $VPN_ENABLED == "yes" ]]; then
 	fi
 
 elif [[ $VPN_ENABLED == "no" ]]; then
-	echo "[WARNING] !!IMPORTANT!! You have set the VPN to disabled, you will NOT be secure!" | ts '%Y-%m-%d %H:%M:%.S'
+	echo "[WARNING] !!IMPORTANT!! You have set the VPN to disabled, your connection will NOT be secure!" | ts '%Y-%m-%d %H:%M:%.S'
 fi
 
 
@@ -259,13 +249,15 @@ if [[ $VPN_ENABLED == "yes" ]]; then
 	if [[ "${VPN_TYPE}" == "openvpn" ]]; then
 		echo "[INFO] Starting OpenVPN..." | ts '%Y-%m-%d %H:%M:%.S'
 		cd /config/openvpn
-		exec openvpn --config "${VPN_CONFIG}" &
+		exec openvpn --pull-filter ignore route-ipv6 --pull-filter ignore ifconfig-ipv6 --config "${VPN_CONFIG}" &
 		#exec /bin/bash /etc/openvpn/openvpn.init start &
 	else
 		echo "[INFO] Starting WireGuard..." | ts '%Y-%m-%d %H:%M:%.S'
 		cd /config/wireguard
-		wg-quick down $VPN_CONFIG || echo "WireGuard is down already" | ts '%Y-%m-%d %H:%M:%.S' # Run wg-quick down as an extra safeguard in case WireGuard is still up for some reason
-		sleep 0.5 # Just to give WireGuard a bit to go down
+		if ip link | grep -q `basename -s .conf $VPN_CONFIG`; then
+			wg-quick down $VPN_CONFIG || echo "WireGuard is down already" | ts '%Y-%m-%d %H:%M:%.S' # Run wg-quick down as an extra safeguard in case WireGuard is still up for some reason
+			sleep 0.5 # Just to give WireGuard a bit to go down
+		fi
 		wg-quick up $VPN_CONFIG
 		#exec /bin/bash /etc/openvpn/openvpn.init start &
 	fi
