@@ -51,11 +51,7 @@ $ docker run --privileged  -d \
 |`HEALTH_CHECK_HOST`| No |This is the host or IP that the healthcheck script will use to check an active connection|`HEALTH_CHECK_HOST=one.one.one.one`|`one.one.one.one`|
 |`HEALTH_CHECK_INTERVAL`| No |This is the time in seconds that the container waits to see if the internet connection still works (check if VPN died)|`HEALTH_CHECK_INTERVAL=300`|`300`|
 |`HEALTH_CHECK_SILENT`| No |Set to `1` to supress the 'Network is up' message. Defaults to `1` if unset.|`HEALTH_CHECK_SILENT=1`|`1`|
-|`DISABLE_IPV6`\*| No |Setting the value of this to `0` will **enable** IPv6 in sysctl. `1` will disable IPv6 in sysctl.|`DISABLE_IPV6=1`|`1`|
 |`ADDITIONAL_PORTS`| No |Adding a comma delimited list of ports will allow these ports via the iptables script.|`ADDITIONAL_PORTS=1234,8112`||
-
-\*This option was initially added as a way to fix problems with VPN providers that support IPv6 and might not work at all. I am unable to test this since my VPN provider does not support IPv6, nor I have an IPv6 connection.
-
 
 ## Volumes
 | Volume | Required | Function | Example |
@@ -103,16 +99,7 @@ User ID (PUID) and Group ID (PGID) can be found by issuing the following command
 id <username>
 ```
 
-## Known issue IPv6
-There is a known issue with VPN providers that support IPv6.  
-To workaround this issue, you need to add the folling lines to your .ovpn file:
-```
-pull-filter ignore 'route-ipv6'
-pull-filter ignore 'ifconfig-ipv6'
-```
-Thanks to [Technikte](https://github.com/Technikte) in [Issue #19](https://github.com/DyonR/docker-Jackettvpn/issues/19).
-
 # Issues
-If you are having issues with this container please submit an issue on GitHub.
-Please provide logs, docker version and other information that can simplify reproducing the issue.
-Using the latest stable verison of Docker is always recommended. Support for older version is on a best-effort basis.
+If you are having issues with this container please submit an issue on GitHub.  
+Please provide logs, Docker version and other information that can simplify reproducing the issue.  
+If possible, always use the most up to date version of Docker, you operating system, kernel and the container itself. Support is always a best-effort basis.
