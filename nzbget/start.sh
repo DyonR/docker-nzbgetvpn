@@ -17,6 +17,11 @@ if [ ! -e /config/NZBGet/nzbget.conf ]; then
 	chown ${PUID}:${PGID} /config/NZBGet/nzbget.conf
 fi
 
+export INSTALL_PYTHON3=$(echo "${INSTALL_PYTHON3,,}")
+if [[ $INSTALL_PYTHON3 == "yes" ]]; then
+	/bin/bash /etc/nzbget/install-python3.sh
+fi
+
 # Check if the PGID exists, if not create the group with the name 'nzbget'
 grep $"${PGID}:" /etc/group > /dev/null 2>&1
 if [ $? -eq 0 ]; then
