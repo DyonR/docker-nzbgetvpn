@@ -6,7 +6,7 @@ Docker container which runs the latest [NZBGet](https://github.com/nzbget/NZBGet
 
 
 ## Docker Features
-* Base: Debian 10-slim
+* Base: Debian bullseye-slim
 * [NZBGet](https://github.com/nzbget/NZBGet) compiled from source
 * Selectively enable or disable WireGuard or OpenVPN support
 * IP tables killswitch to prevent IP leaking when VPN connection fails
