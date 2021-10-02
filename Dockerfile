@@ -14,11 +14,12 @@ RUN apt update \
     curl \
     jq \
     ca-certificates \
-    && NZBGET_VERSION=$(curl -sX GET "https://api.github.com/repos/nzbget/nzbget/releases" | jq '.[] | select(.prerelease==false) | .name' | head -n 1 | tr -d '"') \
-    && curl -o nzbget-${NZBGET_VERSION}-bin-linux.run -L https://github.com/nzbget/nzbget/releases/download/v${NZBGET_VERSION}/nzbget-${NZBGET_VERSION}-bin-linux.run \
-    && chmod +x nzbget-${NZBGET_VERSION}-bin-linux.run \
-    && ./nzbget-${NZBGET_VERSION}-bin-linux.run \
-    && rm nzbget-${NZBGET_VERSION}-bin-linux.run \
+    && NZBGET_VERSION_NAME=$(curl -sX GET "https://api.github.com/repos/nzbget/nzbget/releases" | jq '.[] | select(.prerelease==true) | .name' | head -n 1 | tr -d '"') \
+    && NZBGET_TAG_NAME=$(curl -sX GET "https://api.github.com/repos/nzbget/nzbget/releases" | jq '.[] | select(.prerelease==true) | .tag_name' | head -n 1 | tr -d '"') \
+    && curl -o nzbget-${NZBGET_VERSION_NAME}-bin-linux.run -L https://github.com/nzbget/nzbget/releases/download/${NZBGET_TAG_NAME}/nzbget-${NZBGET_VERSION_NAME}-bin-linux.run \
+    && chmod +x nzbget-${NZBGET_VERSION_NAME}-bin-linux.run \
+    && ./nzbget-${NZBGET_VERSION_NAME}-bin-linux.run \
+    && rm nzbget-${NZBGET_VERSION_NAME}-bin-linux.run \
     && apt -y purge \
     curl \
     jq \
