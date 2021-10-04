@@ -62,6 +62,10 @@ RUN echo "deb http://deb.debian.org/debian/ unstable main" > /etc/apt/sources.li
     /tmp/* \
     /var/tmp/*
 
+# Remove Expired Let's Encrypt Root Certificate
+RUN sed -i '\~mozilla/DST_Root_CA_X3.crt~d' /etc/ca-certificates.conf \
+    && update-ca-certificates
+
 VOLUME /config /downloads
 
 ADD openvpn/ /etc/openvpn/
