@@ -1,3 +1,9 @@
+> # **Status notice**
+>
+> Due to loss in interest in maintaining Docker container, this project is no longer being worked on and no updates can be expected.
+
+---
+
 # [NZBGet](https://github.com/nzbget/NZBGet), WireGuard and OpenVPN
 [![Docker Pulls](https://img.shields.io/docker/pulls/dyonr/nzbgetvpn)](https://hub.docker.com/r/dyonr/nzbgetvpn)
 [![Docker Image Size (tag)](https://img.shields.io/docker/image-size/dyonr/nzbgetvpn)](https://hub.docker.com/r/dyonr/nzbgetvpn)
